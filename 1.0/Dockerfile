@@ -7,14 +7,14 @@ RUN yum -y install openssh-server curl openssh openssh-clients net-tools bind-ut
 RUN yum clean all
 RUN rm -rf /var/cache/yum
 
-## SETUP OPENSSH
+## SETUP OPENSSH, CREATE '/var/sftp' FOLDER, FIX PERMISSIONS AND DELETE '/var/run/nologin' FOLDER
 RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config
 RUN sed -i 's/#Port.*$/Port 2222/' /etc/ssh/sshd_config
 RUN chmod 775 /var/run
 RUN mkdir /var/sftp && chmod 775 /var/sftp
 RUN rm -f /var/run/nologin
 
-## SETUP SFTP USER
+## SETUP SFTP USER, ADD 'sshd_config' FILE TO '/etc/ssh' FOLDER AND FIX PERMISSIONS
 RUN adduser --system -s /bin/bash -u 10001 -g 0 sftp_user # uid to replace later
 RUN chmod 775 /etc/ssh /home # keep writable for openshift user group (root)
 ADD sshd_conf /etc/ssh/sshd_config
