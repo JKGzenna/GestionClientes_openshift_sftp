@@ -1,5 +1,5 @@
 FROM centos/s2i-core-centos7
-MAINTAINER GCTIO Devops
+MAINTAINER Juan Luis Goldaracena
 
 ## INSTALL REQUISITES
 RUN yum repolist && yum install epel-release -y
@@ -20,23 +20,16 @@ RUN chmod 775 /etc/ssh /home # keep writable for openshift user group (root)
 ADD sshd_conf /etc/ssh/sshd_config
 RUN chmod 660 /etc/ssh/sshd_config
 RUN chmod 664 /etc/passwd /etc/group # to help uid fix
-RUN touch /var/log/sshd.log && \
-    chgrp -R 0 /var/log/sshd.log && \
-    chmod 0775 /var/log/sshd.log
+RUN touch /var/log/sshd.log && chgrp -R 0 /var/log/sshd.log && chmod 0775 /var/log/sshd.log
 
 ## COPY 'authorized_keys' FILE PROVIDED IN DOCKERFILE BUILD AND ALWAYS WITH SAME AUTHORIZED USERS
-COPY /authorized_keys_chile/authorized_keys /tmp
+COPY /authorized_keys/authorized_keys /tmp
 RUN  chmod 775 /tmp/authorized_keys
 
 ## COPY SSH RSA HOST KEYS PROVIDED IN DOCKERFILE BUILD AND ALWAYS SAME
-COPY /authorized_keys_chile/ssh_host_dsa_key /tmp
+COPY /host_keys/ssh_host_dsa_key /tmp
 RUN  chmod 775 /tmp/ssh_host_dsa_key
-
-#probar sin esta que no viene en el sshdconf
-COPY /authorized_keys_chile/ssh_host_ecdsa_key /tmp
-RUN  chmod 775 /tmp/ssh_host_ecdsa_key
-
-COPY /authorized_keys_chile/ssh_host_rsa_key /tmp
+COPY /host_keys/ssh_host_rsa_key /tmp
 RUN  chmod 775 /tmp/ssh_host_rsa_key
 
 ## COPY ENTRYPOINT

@@ -155,4 +155,3 @@ PermitEmptyPasswords no
 #Banner /etc/issue
 AllowGroups root wheel sftpusers 
 PubkeyAuthentication yes
-
