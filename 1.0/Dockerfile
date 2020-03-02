@@ -32,8 +32,11 @@ RUN  chmod 775 /tmp/ssh_host_dsa_key
 COPY /host_keys/ssh_host_rsa_key /tmp
 RUN  chmod 775 /tmp/ssh_host_rsa_key
 
-## COPY ENTRYPOINT
+## COPY ENTRYPOINT AND FIX PERMISSIONS
 COPY entrypoint.sh /tmp/entrypoint.sh
+RUN chmod 775 -R /tmp && chgrp -R 0 /tmp && chown -R 10001 /tmp
+RUN chmod +x /tmp/entrypoint.sh && chmod 775 /tmp/entrypoint.sh
+
 
 ## EXPOSE PORT
 EXPOSE 2222
