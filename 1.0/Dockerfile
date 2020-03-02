@@ -37,7 +37,6 @@ COPY entrypoint.sh /tmp/entrypoint.sh
 RUN chmod 775 -R /tmp && chgrp -R 0 /tmp && chown -R 10001 /tmp
 RUN chmod +x /tmp/entrypoint.sh && chmod 775 /tmp/entrypoint.sh
 
-
 ## EXPOSE PORT
 EXPOSE 2222
 
